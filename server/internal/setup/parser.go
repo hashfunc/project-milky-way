@@ -3,7 +3,6 @@ package setup
 import (
 	"bufio"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"io/fs"
@@ -11,6 +10,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/hashfunc/project-milky-way/internal"
 	"github.com/hashfunc/project-milky-way/internal/model"
 )
 
@@ -32,7 +32,7 @@ func GetCsvFiles() ([]fs.FileInfo, error) {
 	files, err := ioutil.ReadDir(DefaultDataPath)
 
 	if err != nil {
-		return nil, newError("CSV 파일 조회 오류", err)
+		return nil, internal.NewError("CSV 파일 조회 오류", err)
 	}
 
 	var csvFiles []fs.FileInfo
@@ -50,7 +50,7 @@ func SaveData(stars []*model.Star) error {
 	file, err := os.Create(DefaultDataPath + "data.json")
 
 	if err != nil {
-		return newError("파일 생성 오류", err)
+		return internal.NewError("파일 생성 오류", err)
 	}
 
 	defer closeOrPanic(file)
@@ -58,11 +58,11 @@ func SaveData(stars []*model.Star) error {
 	data, err := json.Marshal(stars)
 
 	if err != nil {
-		return newError("데이터 변환 오류", err)
+		return internal.NewError("데이터 변환 오류", err)
 	}
 
 	if _, err := file.Write(data); err != nil {
-		return newError("데이터 저장 오류", err)
+		return internal.NewError("데이터 저장 오류", err)
 	}
 
 	return nil
@@ -88,7 +88,7 @@ func parseStarsFromFile(filePath string) ([]*model.Star, error) {
 	file, err := os.Open(filePath)
 
 	if err != nil {
-		return nil, newError("CSV 파일 열기 오류", err)
+		return nil, internal.NewError("CSV 파일 열기 오류", err)
 	}
 
 	defer closeOrPanic(file)
@@ -105,7 +105,7 @@ func parseStarsFromFile(filePath string) ([]*model.Star, error) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		return nil, newError("CSV 파일 읽기 오류", err)
+		return nil, internal.NewError("CSV 파일 읽기 오류", err)
 	}
 
 	return data, nil
@@ -134,11 +134,6 @@ func isStar(row string) bool {
 
 func isCafe(row string) bool {
 	return strings.Contains(row, "커피점/카페")
-}
-
-func newError(message string, err error) error {
-	text := fmt.Sprintf("%v: %v", message, err)
-	return errors.New(text)
 }
 
 func closeOrPanic(closer io.Closer) func() {
