@@ -4,20 +4,26 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+
+	"github.com/hashfunc/project-milky-way/internal/config"
 )
 
-const projectName = "Project Milky Way"
-
 func main() {
-	config := fiber.Config{
-		AppName:      projectName,
-		ServerHeader: projectName,
+	serverConfig, err := config.LoadConfigFile()
+
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	app := fiber.New(config)
+	app := fiber.New(
+		fiber.Config{
+			AppName:      serverConfig.Name,
+			ServerHeader: serverConfig.Name,
+		},
+	)
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString(projectName)
+		return c.SendString(serverConfig.Name)
 	})
 
 	log.Fatal(app.Listen(":3000"))
