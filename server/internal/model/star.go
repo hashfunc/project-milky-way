@@ -1,11 +1,17 @@
 package model
 
+type GeoJSON struct {
+	Type        string        `bson:"type"`
+	Coordinates []interface{} `bson:"coordinates"`
+}
+
 type Star struct {
-	Code        string `json:"code"`
-	Name        string `json:"name"`
-	BCode       string `json:"b_code"`
-	Address     string `json:"address"`
-	RoadAddress string `json:"road_address"`
-	Longitude   string `json:"longitude"`
-	Latitude    string `json:"latitude"`
+	Code        string   `bson:"code"`
+	Name        string   `bson:"name"`
+	BCode       string   `bson:"b_code"`
+	Address     string   `bson:"address"`
+	RoadAddress string   `bson:"road_address"`
+	Longitude   float64  `bson:"longitude"`
+	Latitude    float64  `bson:"latitude"`
+	Point       *GeoJSON `bson:"point"`
 }

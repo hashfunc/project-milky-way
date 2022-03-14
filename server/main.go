@@ -6,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/hashfunc/project-milky-way/internal/config"
+	"github.com/hashfunc/project-milky-way/internal/database"
 )
 
 func main() {
@@ -14,6 +15,16 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	if err := database.Connect(&serverConfig.Database); err != nil {
+		log.Fatal(err)
+	}
+
+	defer func() {
+		if err := database.Connection.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	app := fiber.New(
 		fiber.Config{

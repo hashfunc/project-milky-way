@@ -19,7 +19,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if err := setup.SaveData(stars); err != nil {
+	if err := setup.Database(stars); err != nil {
 		log.Fatal(err)
 	}
 }

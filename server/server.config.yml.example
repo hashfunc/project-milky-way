@@ -1,1 +1,7 @@
-name: ""
+name: 서버이름
+database:
+  host: MongoDB Host
+  port: MongoDB Port
+  username: MongoDB 사용자
+  password: MongoDB 비밀번호
+  database: MongoDB Database
