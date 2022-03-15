@@ -1,4 +1,4 @@
-package database
+package db
 
 import (
 	"context"
@@ -14,18 +14,21 @@ type Context struct {
 	database *mongo.Database
 }
 
-func (connection *Context) DB(name string, opts ...*options.DatabaseOptions) (*mongo.Database, error) {
+func (connection *Context) setDatabase(
+	name string, opts ...*options.DatabaseOptions,
+) error {
 	if connection.client == nil {
-		return nil, errors.New("mongodb 연결 실패")
+		return errors.New("db.Context: 클라이언트가 설정되지 않았습니다")
 	}
 
-	db := connection.client.Database(name, opts...)
+	database := connection.client.Database(name, opts...)
+	connection.database = database
 
-	if db == nil {
-		return nil, errors.New("database 조회 실패")
-	}
+	return nil
+}
 
-	return db, nil
+func (connection *Context) DB() *mongo.Database {
+	return connection.database
 }
 
 func (connection *Context) Close() error {
@@ -53,6 +56,10 @@ func Connect(config *Config) error {
 	defer cancel()
 
 	if err := client.Ping(ctx, nil); err != nil {
+		panic(err)
+	}
+
+	if err := Connection.setDatabase(config.Name); err != nil {
 		panic(err)
 	}
 

@@ -10,7 +10,7 @@ import (
 
 	"github.com/hashfunc/project-milky-way/internal"
 	"github.com/hashfunc/project-milky-way/internal/config"
-	"github.com/hashfunc/project-milky-way/internal/database"
+	"github.com/hashfunc/project-milky-way/internal/db"
 	"github.com/hashfunc/project-milky-way/internal/model"
 )
 
@@ -21,17 +21,11 @@ func Database(stars []*model.Star) error {
 		log.Fatal(conf)
 	}
 
-	if err := database.Connect(&conf.Database); err != nil {
+	if err := db.Connect(&conf.Database); err != nil {
 		log.Fatal(err)
 	}
 
-	db, err := database.Connection.DB(conf.Database.Name)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	collection := db.Collection("stars")
+	collection := db.Connection.DB().Collection("stars")
 
 	if collection == nil {
 		log.Fatal("Collection 조회 실패")

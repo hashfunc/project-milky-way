@@ -6,12 +6,12 @@ type GeoJSON struct {
 }
 
 type Star struct {
-	Code        string   `bson:"code"`
-	Name        string   `bson:"name"`
-	BCode       string   `bson:"b_code"`
-	Address     string   `bson:"address"`
-	RoadAddress string   `bson:"road_address"`
-	Longitude   float64  `bson:"longitude"`
-	Latitude    float64  `bson:"latitude"`
-	Point       *GeoJSON `bson:"point"`
+	Code        string   `bson:"code" json:"-"`
+	Name        string   `bson:"name" json:"name"`
+	BCode       string   `bson:"b_code" json:"-"`
+	Address     string   `bson:"address" json:"address"`
+	RoadAddress string   `bson:"road_address" json:"road_address"`
+	Longitude   float64  `bson:"longitude" json:"longitude"`
+	Latitude    float64  `bson:"latitude" json:"latitude"`
+	Point       *GeoJSON `bson:"point" json:"-"`
 }
