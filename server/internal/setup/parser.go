@@ -2,8 +2,6 @@ package setup
 
 import (
 	"bufio"
-	"fmt"
-	"io"
 	"io/fs"
 	"io/ioutil"
 	"log"
@@ -68,7 +66,7 @@ func parseStarsFromFile(filePath string) ([]*model.Star, error) {
 		return nil, internal.NewError("CSV 파일 열기 오류", err)
 	}
 
-	defer closeOrPanic(file)
+	defer internal.CloseOrPanic(file)
 
 	var data []*model.Star
 
@@ -129,13 +127,4 @@ func isStar(row string) bool {
 
 func isCafe(row string) bool {
 	return strings.Contains(row, "커피점/카페")
-}
-
-func closeOrPanic(closer io.Closer) func() {
-	return func() {
-		if err := closer.Close(); err != nil {
-			text := fmt.Sprintf("Close error: %v", err)
-			panic(text)
-		}
-	}
 }
