@@ -1,46 +1,33 @@
 package api
 
 import (
-	"strconv"
-	"strings"
-
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/hashfunc/project-milky-way/internal/model"
 )
 
+type GetStarsQueryParams struct {
+	Longitude float64 `validate:"required"`
+	Latitude  float64 `validate:"required"`
+	Distance  int     `validate:"required,min=100,max=5000"`
+}
+
 func GetStars(ctx *fiber.Ctx) error {
-	location := ctx.Params("location")
-	if location == "" {
-		return fiber.ErrBadRequest
+	params := new(GetStarsQueryParams)
+
+	if err := ctx.QueryParser(params); err != nil {
+		return BadRequest(ctx, err)
 	}
 
-	axis := strings.Split(location, ",")
-	if len(axis) != 2 {
-		return fiber.ErrBadRequest
+	if err := validate.Struct(params); err != nil {
+		return BadRequest(ctx, err)
 	}
 
-	longitude, err := strconv.ParseFloat(axis[0], 64)
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
-
-	latitude, err := strconv.ParseFloat(axis[1], 64)
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
-
-	stars, err := model.QueryStars(longitude, latitude, 2000)
+	stars, err := model.QueryStars(params.Longitude, params.Latitude, params.Distance)
 
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		return InternalServerError(ctx, err)
 	}
 
-	return ctx.JSON(
-		&DefaultResponse{
-			Code:    "OK",
-			Message: "OK",
-			Data:    &stars,
-		},
-	)
+	return OK(ctx, stars)
 }

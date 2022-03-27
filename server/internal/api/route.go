@@ -13,5 +13,5 @@ func routeApi(app *fiber.App) {
 
 func routeVersion1(router *fiber.Router) {
 	v1Group := (*router).Group("/v1")
-	v1Group.Get("/stars/:location", GetStars)
+	v1Group.Get("/stars", GetStars)
 }
