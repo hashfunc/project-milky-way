@@ -5,6 +5,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 
+	"github.com/hashfunc/project-milky-way/internal/api"
 	"github.com/hashfunc/project-milky-way/internal/config"
 	"github.com/hashfunc/project-milky-way/internal/db"
 )
@@ -33,9 +34,7 @@ func main() {
 		},
 	)
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString(serverConfig.Name)
-	})
+	api.Route(app)
 
 	log.Fatal(app.Listen(":3000"))
 }
