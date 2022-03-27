@@ -23,7 +23,7 @@ func (server *Server) Close() error {
 	return nil
 }
 
-func New() (*Server, error) {
+func NewServer() (*Server, error) {
 	serverConfig, err := config.LoadConfigFile()
 
 	if err != nil {
