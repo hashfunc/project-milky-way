@@ -167,4 +167,4 @@ Temporary Items
 
 *.config.yml
 
-server/.data/
+backend/.data/

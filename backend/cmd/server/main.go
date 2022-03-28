@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/hashfunc/project-milky-way/internal/server"
 	"log"
 
 	"github.com/hashfunc/project-milky-way/internal"
+	"github.com/hashfunc/project-milky-way/internal/server"
 )
 
 func main() {
