@@ -1,11 +1,5 @@
-<main>
-	<slot />
-</main>
+<script>
+	import '../app.css';
+</script>
 
-<style>
-	main {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-</style>
+<slot />
