@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/hashfunc/project-milky-way/internal"
-	"github.com/hashfunc/project-milky-way/internal/model"
+	"github.com/hashfunc/project-milky-way/internal/database"
 )
 
 const (
@@ -43,8 +43,8 @@ func GetCsvFiles() ([]fs.FileInfo, error) {
 	return csvFiles, nil
 }
 
-func GetStarsFromFiles(files []fs.FileInfo) ([]*model.Star, error) {
-	var ret []*model.Star
+func GetStarsFromFiles(files []fs.FileInfo) ([]*database.Star, error) {
+	var ret []*database.Star
 
 	for _, file := range files {
 		stars, err := parseStarsFromFile(DefaultDataPath + file.Name())
@@ -59,7 +59,7 @@ func GetStarsFromFiles(files []fs.FileInfo) ([]*model.Star, error) {
 	return ret, nil
 }
 
-func parseStarsFromFile(filePath string) ([]*model.Star, error) {
+func parseStarsFromFile(filePath string) ([]*database.Star, error) {
 	file, err := os.Open(filePath)
 
 	if err != nil {
@@ -68,7 +68,7 @@ func parseStarsFromFile(filePath string) ([]*model.Star, error) {
 
 	defer internal.CloseOrPanic(file)
 
-	var data []*model.Star
+	var data []*database.Star
 
 	scanner := bufio.NewScanner(file)
 
@@ -86,7 +86,7 @@ func parseStarsFromFile(filePath string) ([]*model.Star, error) {
 	return data, nil
 }
 
-func parseStarFromRow(row string) *model.Star {
+func parseStarFromRow(row string) *database.Star {
 	column := strings.Split(row, ",")
 
 	longitude, err := strconv.ParseFloat(trimQuote(column[len(column)-2]), 64)
@@ -102,7 +102,7 @@ func parseStarFromRow(row string) *model.Star {
 		log.Panic(err)
 	}
 
-	return &model.Star{
+	return &database.Star{
 		Code:        trimQuote(column[ColumnIndexCode]),
 		Name:        trimQuote(column[ColumnIndexName]),
 		BCode:       trimQuote(column[ColumnIndexBCode]),
@@ -110,7 +110,7 @@ func parseStarFromRow(row string) *model.Star {
 		RoadAddress: trimQuote(column[ColumnIndexRoadAddress]),
 		Longitude:   longitude,
 		Latitude:    latitude,
-		Point: &model.GeoJSON{
+		Point: &database.GeoJSON{
 			Type:        "Point",
 			Coordinates: []interface{}{longitude, latitude},
 		},

@@ -10,7 +10,7 @@ import (
 	"gopkg.in/yaml.v2"
 
 	"github.com/hashfunc/project-milky-way/internal"
-	"github.com/hashfunc/project-milky-way/internal/db"
+	"github.com/hashfunc/project-milky-way/internal/database"
 )
 
 const (
@@ -18,9 +18,9 @@ const (
 )
 
 type Config struct {
-	Name     string    `yaml:"name" config:"required"`
-	Bind     string    `yaml:"bind"`
-	Database db.Config `yaml:"database"`
+	Name     string          `yaml:"name" config:"required"`
+	Bind     string          `yaml:"bind"`
+	Database database.Config `yaml:"database"`
 }
 
 func LoadConfigFile() (*Config, error) {

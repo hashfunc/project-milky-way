@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 
-	"github.com/hashfunc/project-milky-way/internal"
 	"github.com/hashfunc/project-milky-way/internal/server"
 )
 
@@ -14,7 +13,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	defer internal.CloseOrPanic(srv)
-
-	log.Fatal(srv.Start())
+	srv.Run()
 }

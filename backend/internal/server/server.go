@@ -1,58 +1,79 @@
 package server
 
 import (
+	"log"
+
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 
-	"github.com/hashfunc/project-milky-way/internal/api"
+	"github.com/hashfunc/project-milky-way/internal"
 	"github.com/hashfunc/project-milky-way/internal/config"
-	"github.com/hashfunc/project-milky-way/internal/db"
+	"github.com/hashfunc/project-milky-way/internal/database"
 )
 
 type Server struct {
-	application *fiber.App
-	config      *config.Config
+	app      *fiber.App
+	db       *database.Connection
+	config   *config.Config
+	validate *validator.Validate
 }
 
-func (server *Server) Start() error {
+type (
+	Handler  func(*fiber.Ctx) error
+	Register func(*Server) Handler
+)
+
+func (server *Server) RegisterAPI(register Register) Handler {
+	return register(server)
+}
+
+func (server *Server) Register() {
+	group := server.app.Group("api/v1")
+	group.Get("/stars", server.RegisterAPI(GetStars))
+}
+
+func (server *Server) Run() {
+	defer internal.CloseOrPanic(server.db)
+
+	db, err := database.New(&server.config.Database)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	server.db = db
+
 	bind := server.config.Bind
+
 	if bind == "" {
 		bind = ":8080"
 	}
-	return server.application.Listen(bind)
-}
 
-func (server *Server) Close() error {
-	if err := db.Connection.Close(); err != nil {
-		return err
+	if err := server.app.Listen(bind); err != nil {
+		log.Fatal(err)
 	}
-	return nil
 }
 
 func NewServer() (*Server, error) {
-	serverConfig, err := config.LoadConfigFile()
+	cfg, err := config.LoadConfigFile()
 
 	if err != nil {
 		return nil, err
 	}
 
-	err = db.Connect(&serverConfig.Database)
-
-	if err != nil {
-		return nil, err
-	}
-
-	application := fiber.New(
+	app := fiber.New(
 		fiber.Config{
-			AppName:      serverConfig.Name,
-			ServerHeader: serverConfig.Name,
-		})
-
-	api.Route(application)
+			AppName: cfg.Name,
+		},
+	)
 
 	server := &Server{
-		application: application,
-		config:      serverConfig,
+		app:      app,
+		config:   cfg,
+		validate: validator.New(),
 	}
+
+	server.Register()
 
 	return server, nil
 }
