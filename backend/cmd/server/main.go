@@ -16,5 +16,5 @@ func main() {
 
 	defer internal.CloseOrPanic(srv)
 
-	log.Fatal(srv.Listen(":3000"))
+	log.Fatal(srv.Start())
 }

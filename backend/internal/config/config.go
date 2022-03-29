@@ -19,6 +19,7 @@ const (
 
 type Config struct {
 	Name     string    `yaml:"name" config:"required"`
+	Bind     string    `yaml:"bind"`
 	Database db.Config `yaml:"database"`
 }
 

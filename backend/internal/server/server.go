@@ -10,10 +10,15 @@ import (
 
 type Server struct {
 	application *fiber.App
+	config      *config.Config
 }
 
-func (server *Server) Listen(address string) error {
-	return server.application.Listen(address)
+func (server *Server) Start() error {
+	bind := server.config.Bind
+	if bind == "" {
+		bind = ":8080"
+	}
+	return server.application.Listen(bind)
 }
 
 func (server *Server) Close() error {
@@ -46,6 +51,7 @@ func NewServer() (*Server, error) {
 
 	server := &Server{
 		application: application,
+		config:      serverConfig,
 	}
 
 	return server, nil
