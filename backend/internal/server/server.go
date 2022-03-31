@@ -6,6 +6,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 
+	"github.com/hashfunc/project-milky-way/ext/kakao"
 	"github.com/hashfunc/project-milky-way/internal"
 	"github.com/hashfunc/project-milky-way/internal/config"
 	"github.com/hashfunc/project-milky-way/internal/database"
@@ -16,6 +17,7 @@ type Server struct {
 	db       *database.Connection
 	config   *config.Config
 	validate *validator.Validate
+	kakao    *kakao.Client
 }
 
 type (
@@ -30,6 +32,7 @@ func (server *Server) RegisterAPI(register Register) Handler {
 func (server *Server) Register() {
 	group := server.app.Group("api/v1")
 	group.Get("/stars", server.RegisterAPI(GetStars))
+	group.Get("/search/keyword", server.RegisterAPI(SearchKeyword))
 }
 
 func (server *Server) Run() {
@@ -71,6 +74,7 @@ func NewServer() (*Server, error) {
 		app:      app,
 		config:   cfg,
 		validate: validator.New(),
+		kakao:    kakao.NewClient(cfg.Secret.Kakao),
 	}
 
 	server.Register()

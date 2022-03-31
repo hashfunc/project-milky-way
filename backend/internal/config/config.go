@@ -9,6 +9,7 @@ import (
 
 	"gopkg.in/yaml.v2"
 
+	"github.com/hashfunc/project-milky-way/ext/kakao"
 	"github.com/hashfunc/project-milky-way/internal"
 	"github.com/hashfunc/project-milky-way/internal/database"
 )
@@ -21,6 +22,11 @@ type Config struct {
 	Name     string          `yaml:"name" config:"required"`
 	Bind     string          `yaml:"bind"`
 	Database database.Config `yaml:"database"`
+	Secret   *Secret         `yaml:"secret"`
+}
+
+type Secret struct {
+	Kakao *kakao.Config `yaml:"kakao"`
 }
 
 func LoadConfigFile() (*Config, error) {

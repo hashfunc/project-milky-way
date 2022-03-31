@@ -28,6 +28,6 @@ func GetStars(server *Server) Handler {
 			return InternalServerError(ctx, err)
 		}
 
-		return OK(ctx, stars)
+		return OK(ctx, stars, nil)
 	}
 }

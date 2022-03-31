@@ -6,3 +6,7 @@ database:
   username: MongoDB 사용자
   password: MongoDB 비밀번호
   database: MongoDB Database
+secret:
+  kakao:
+    url: Kakao REST API URL
+    key: Kakao REST API Key

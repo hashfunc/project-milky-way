@@ -5,13 +5,15 @@ import "github.com/gofiber/fiber/v2"
 type DefaultResponse struct {
 	Code    string      `json:"code"`
 	Message string      `json:"message"`
+	Meta    interface{} `json:"meta,omitempty"`
 	Data    interface{} `json:"data,omitempty"`
 }
 
-func OK(ctx *fiber.Ctx, data interface{}) error {
+func OK(ctx *fiber.Ctx, data, meta interface{}) error {
 	return ctx.JSON(&DefaultResponse{
 		Code:    "S200",
 		Message: "OK",
+		Meta:    meta,
 		Data:    data,
 	})
 }
