@@ -1,13 +1,11 @@
 <script lang="ts">
-	import MapButton from './MapButton.svelte';
-	import ProjectTitle from './ProjectTitle.svelte';
-	import SearchForm from './SearchForm.svelte';
+	import Header from '$lib/Header/Header.svelte';
+	import Map from './Map.svelte';
 </script>
 
 <main>
-	<ProjectTitle />
-	<SearchForm placeholder="장소를 검색해주세요." />
-	<MapButton />
+	<Header />
+	<Map />
 </main>
 
 <style>

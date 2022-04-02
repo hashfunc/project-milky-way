@@ -10,7 +10,7 @@
 
 ### 준비
 
-- [Kakao REST API Key](https://developers.kakao.com)
+- [Kakao Application Key](https://developers.kakao.com)
 
 
 - [소상공인시장진흥공단 상가(상권)정보](https://www.data.go.kr/data/15083033/fileData.do)
