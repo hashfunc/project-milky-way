@@ -31,6 +31,7 @@ func (server *Server) RegisterAPI(register Register) Handler {
 
 func (server *Server) Register() {
 	group := server.app.Group("api/v1")
+	group.Use(corsHandler(&server.config.CORS))
 	group.Get("/stars", server.RegisterAPI(GetStars))
 	group.Get("/search/keyword", server.RegisterAPI(SearchKeyword))
 }

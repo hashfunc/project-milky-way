@@ -21,8 +21,18 @@ const (
 type Config struct {
 	Name     string          `yaml:"name" config:"required"`
 	Bind     string          `yaml:"bind"`
+	CORS     CORSConfig      `yaml:"cors"`
 	Database database.Config `yaml:"database"`
 	Secret   *Secret         `yaml:"secret"`
+}
+
+type CORSConfig struct {
+	AllowOrigins     string `yaml:"allow-origins"`
+	AllowMethods     string `yaml:"allow-methods"`
+	AllowHeaders     string `yaml:"allow-headers"`
+	AllowCredentials bool   `yaml:"allow-credentials"`
+	ExposeHeaders    string `yaml:"expose-headers"`
+	MaxAge           int    `yaml:"max-age"`
 }
 
 type Secret struct {

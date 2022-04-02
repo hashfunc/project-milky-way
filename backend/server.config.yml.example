@@ -1,5 +1,12 @@
 name: 서버이름
 bind: 서버 주소 bind (Optional, Default:":8080")
+cors:
+    allow-origins: CORS allow origins (Optional)
+    allow-method: CORS allow methods (Optional)
+    allow-headers: CORS allow headers (Optional)
+    allow-credentials: CORS allow credentials (Optional)
+    expose-headers: CORS expose headers (Optional)
+    mas-age: CORS max age (Optional)
 database:
   host: MongoDB Host
   port: MongoDB Port
