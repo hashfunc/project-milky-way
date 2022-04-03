@@ -9,7 +9,7 @@ import (
 )
 
 type LocalKeywordDocument struct {
-	ID                string `json:"ID"`
+	ID                string `json:"id"`
 	PlaceName         string `json:"place_name"`
 	CategoryName      string `json:"category_name"`
 	CategoryGroupCode string `json:"category_group_code"`
