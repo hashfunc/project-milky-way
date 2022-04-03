@@ -27,7 +27,6 @@
 
 <svelte:head>
 	<script
-		type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey={import.meta.env.VITE_KAKAO_MAP_KEY}"></script>
 </svelte:head>
 

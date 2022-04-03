@@ -5,7 +5,7 @@
 
 	const URL = `${import.meta.env.VITE_API_BASE_URL}/api/v1/search/keyword`;
 
-	let keyword: string = '';
+	let keyword = '';
 
 	async function onSubmit() {
 		const query = `keyword=${encodeURIComponent(keyword)}`;

@@ -1,10 +1,3 @@
-interface Response<T, U> {
-	code: string;
-	message: string;
-	meta?: U;
-	data: T;
-}
-
 interface SearchMeta {
 	total_count: number;
 	pagable_count: number;
@@ -26,4 +19,4 @@ export interface SearchData {
 	distance: string;
 }
 
-export type SearchResponse = Response<SearchData[], SearchMeta>;
+export type SearchResponse = DefaultResponse<SearchData[], SearchMeta>;

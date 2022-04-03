@@ -3,7 +3,7 @@
 	import SearchButton from './SearchButton.svelte';
 	import SearchModal from '$lib/components/SearchModal/SearchModal.svelte';
 
-	let isSearchModalOpen: boolean = false;
+	let isSearchModalOpen = false;
 
 	function openSearchModal() {
 		isSearchModalOpen = true;

@@ -2,6 +2,7 @@
 	import { get } from 'svelte/store';
 	import { store as mapStore } from '$lib/store/map';
 	import IconStar from '$lib/assets/icon-star.png';
+	import type { StarResponse } from './types';
 
 	const DISTANCE_OPTIONS = [
 		{ name: '500m', value: 500 },
@@ -22,7 +23,7 @@
 		try {
 			const response = await fetch(`${URL}?${query}`);
 
-			const data = await response.json();
+			const data: StarResponse = await response.json();
 
 			const { map, markers: prevMarkers } = get(mapStore);
 
@@ -48,7 +49,7 @@
 
 <div class="search-control">
 	<div class="distance-control">
-		{#each DISTANCE_OPTIONS as option, index (option)}
+		{#each DISTANCE_OPTIONS as option (option.value)}
 			<div>
 				<input id={`DO-${option.value}`} type="radio" value={option.value} bind:group={distance} />
 				<label for={`DO-${option.value}`}>{option.name}</label>

@@ -12,7 +12,7 @@
 </script>
 
 <div class="search-result">
-	{#each result as item, index (item)}
+	{#each result as item (item.id)}
 		<div class="item" on:click={() => select(item.y, item.x)}>
 			<div>{item.place_name}</div>
 			<div>{item.road_address_name || item.address_name}</div>
