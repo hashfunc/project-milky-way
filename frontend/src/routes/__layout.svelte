@@ -1,6 +1,6 @@
 <slot />
 
-<style global>
+<style global lang="scss">
 	body {
 		margin: 0;
 		padding: 0;
