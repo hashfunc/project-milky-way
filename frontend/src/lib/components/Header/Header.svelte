@@ -24,7 +24,7 @@
 
 <style>
 	header {
-		z-index: 10;
+		z-index: 20;
 		position: fixed;
 		top: 0;
 		left: 0;

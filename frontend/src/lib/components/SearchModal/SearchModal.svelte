@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import { get } from 'svelte/store';
 	import NoResult from './NoResult.svelte';
 	import SearchError from './SearchError.svelte';
 	import SearchForm from './SearchForm.svelte';
@@ -27,7 +28,12 @@
 	}
 
 	function onSelect(event: CustomEvent) {
-		mapStore.set(event.detail);
+		const { markers } = get(mapStore);
+		markers.forEach((marker) => {
+			marker.setMap(null);
+		});
+
+		mapStore.update((prev) => ({ ...prev, ...event.detail, markers: [] }));
 		dispatch('close');
 	}
 </script>
@@ -47,7 +53,7 @@
 
 <style lang="scss">
 	.search-modal {
-		z-index: 50;
+		z-index: 30;
 		position: fixed;
 		top: 0;
 		left: 0;
