@@ -1,14 +1,25 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
+	import { store as mapStore } from '$lib/store/map';
 
 	let mapContainer: HTMLElement;
 
 	onMount(() => {
-		const options = {
-			center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-			level: 4
-		};
-		new window.kakao.maps.Map(mapContainer, options);
+		const { latitude, longitude } = get(mapStore);
+
+		const position = new window.kakao.maps.LatLng(latitude, longitude);
+
+		const options = { center: position, level: 4 };
+		const map = new window.kakao.maps.Map(mapContainer, options);
+
+		const marker = new window.kakao.maps.Marker({ map, position });
+
+		mapStore.subscribe(({ latitude, longitude }) => {
+			const position = new window.kakao.maps.LatLng(latitude, longitude);
+			map.setCenter(position);
+			marker.setPosition(position);
+		});
 	});
 </script>
 
