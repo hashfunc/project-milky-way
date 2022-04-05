@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { get } from 'svelte/store';
-	import { store as mapStore } from '$lib/store/map';
-	import IconStar from '$lib/assets/icon-star.png';
+	import { actions as mapActions, store as mapStore } from '$lib/store/map';
 	import type { StarResponse } from './types';
 
 	const DISTANCE_OPTIONS = [
@@ -25,22 +24,7 @@
 
 			const data: StarResponse = await response.json();
 
-			const { map, markers: prevMarkers } = get(mapStore);
-
-			prevMarkers.forEach((marker) => {
-				marker.setMap(null);
-			});
-
-			const markers = data.data.map((el) => {
-				const image = new kakao.maps.MarkerImage(IconStar, new kakao.maps.Size(32, 32));
-				const position = new kakao.maps.LatLng(el.latitude, el.longitude);
-				return new kakao.maps.Marker({ map, position, image });
-			});
-
-			const center = new kakao.maps.LatLng(latitude, longitude);
-			map?.setCenter(center);
-
-			mapStore.update((prev) => ({ ...prev, markers }));
+			mapActions.updateMarkers(data.data);
 		} catch (error) {
 			console.log(error);
 		}

@@ -1,27 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { get } from 'svelte/store';
-	import { store as mapStore } from '$lib/store/map';
+	import { actions as mapActions } from '$lib/store/map';
 
-	let mapContainer: HTMLElement;
+	let ref: HTMLElement;
 
 	onMount(() => {
-		const { latitude, longitude } = get(mapStore);
-
-		const position = new kakao.maps.LatLng(latitude, longitude);
-
-		const options = { center: position, level: 4 };
-		const map = new kakao.maps.Map(mapContainer, options);
-
-		const marker = new kakao.maps.Marker({ map, position });
-
-		mapStore.update((prev) => ({ ...prev, map }));
-
-		mapStore.subscribe(({ latitude, longitude, map }) => {
-			const position = new kakao.maps.LatLng(latitude, longitude);
-			map?.setCenter(position);
-			marker.setPosition(position);
-		});
+		mapActions.initialize(ref);
 	});
 </script>
 
@@ -30,7 +14,7 @@
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey={import.meta.env.VITE_KAKAO_MAP_KEY}"></script>
 </svelte:head>
 
-<div class="map-container" bind:this={mapContainer} />
+<div class="map-container" bind:this={ref} />
 
 <style>
 	.map-container {

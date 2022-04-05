@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { get } from 'svelte/store';
 	import NoResult from './NoResult.svelte';
 	import SearchError from './SearchError.svelte';
 	import SearchForm from './SearchForm.svelte';
 	import SearchResult from './SearchResult.svelte';
+	import { actions as mapActions } from '$lib/store/map';
 	import type { SearchData, SearchResponse } from './types';
-	import { store as mapStore } from '$lib/store/map';
 
 	const dispatch = createEventDispatcher();
 
@@ -28,12 +27,8 @@
 	}
 
 	function onSelect(event: CustomEvent) {
-		const { markers } = get(mapStore);
-		markers.forEach((marker) => {
-			marker.setMap(null);
-		});
-
-		mapStore.update((prev) => ({ ...prev, ...event.detail, markers: [] }));
+		mapActions.clearMarkers();
+		mapActions.setCenter(event.detail);
 		dispatch('close');
 	}
 </script>
