@@ -7,7 +7,9 @@ authors = [
     { name = "hashfunc", email = "root@hashfunc.io" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "typer>=0.16.0",
+]
 
 [dependency-groups]
 dev = [
